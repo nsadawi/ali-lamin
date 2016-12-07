@@ -21,7 +21,7 @@ test  <- data[-train.index,]
 #train <- data[train_ind, ]
 #test <- data[-train_ind, ]
 
-model <- glm(Group ~ Age + Y2.volume + Y2.count + Y2.area, family=binomial(link='logit'),data=data)
+model <- glm(Group ~ Age + Y2.count + Y2.area + Y2.volume, family=binomial(link='logit'),data=data)
 
 #B.count * B.area * B.volume * Y1.count * Y1.area * Y1.volume * Y2.count * Y2.area
 anova(model, test="Chisq")
@@ -49,4 +49,4 @@ auc
 group1 = data[data$Group == 1,]
 group0 = data[data$Group == 0,]
 
-wilcox.test(group1$B.count ~ group0$B.count, data=mtcars)
+wilcox.test(group1$B.count , group1$Y1.count,paired=TRUE)
