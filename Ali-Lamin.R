@@ -2,12 +2,12 @@
 data <- read.csv('~/Downloads/UCL.csv',header=T)
 data$Group[data$Group == 2] <- 0
 
-data = data[, !(colnames(data) %in% c("Hosp.No","DOB","Basline.visit.date","Age","gender","Eye","X"))]
+data = data[, !(colnames(data) %in% c("Hosp.No","DOB","Basline.visit.date","Eye","X"))]
 
 ## 75% of the sample size
 smp_size <- floor(0.75 * nrow(data))
 
-             "Y2.volume"
+             
 library(caret)
 ## set the seed to make your partition reproductible
 set.seed(11)
@@ -21,7 +21,7 @@ test  <- data[-train.index,]
 #train <- data[train_ind, ]
 #test <- data[-train_ind, ]
 
-model <- glm(Group ~ Y2.count * Y2.area * Y2.volume,family=binomial(link='logit'),data=train)
+model <- glm(Group ~ Age + Y2.volume + Y2.count + Y2.area, family=binomial(link='logit'),data=data)
 
 #B.count * B.area * B.volume * Y1.count * Y1.area * Y1.volume * Y2.count * Y2.area
 anova(model, test="Chisq")
