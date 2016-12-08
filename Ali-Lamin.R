@@ -2,7 +2,39 @@
 data <- read.csv('~/Downloads/UCL.csv',header=T)
 data$Group[data$Group == 2] <- 0
 
+s = as.character(data$gender) 
+s[s == "M"] <- 1
+s[s == "F"] <- 0
+data$gender = as.numeric(s)
+
 data = data[, !(colnames(data) %in% c("Hosp.No","DOB","Basline.visit.date","Eye","X"))]
+
+data$BY1.count.diff <- data$Y1.count - data$B.count
+data$Y1Y2.count.diff <- data$Y2.count - data$Y1.count
+group1 = data[data$Group == 1,]
+group0 = data[data$Group == 0,]
+#wilcox.test(group0$BY1.count.diff , group0$Y1Y2.count.diff,paired=TRUE)
+#wilcox.test(group1$BY1.count.diff , group0$BY1.count.diff,paired=FALSE)
+wilcox.test(group1$Y1Y2.count.diff , group0$Y1Y2.count.diff,paired=FALSE)
+
+
+data$BY1.area.diff <- data$Y1.area - data$B.area
+data$Y1Y2.area.diff <- data$Y2.area - data$Y1.area
+group1 = data[data$Group == 1,]
+group0 = data[data$Group == 0,]
+#wilcox.test(group0$BY1.area.diff , group0$Y1Y2.area.diff,paired=TRUE)
+#wilcox.test(group1$BY1.area.diff , group0$BY1.area.diff,paired=FALSE)
+wilcox.test(group1$Y1Y2.area.diff , group0$Y1Y2.area.diff,paired=FALSE)
+
+data$BY1.vol.diff <- data$Y1.volume - data$B.volume
+data$Y1Y2.vol.diff <- data$Y2.volume - data$Y1.volume
+group1 = data[data$Group == 1,]
+group0 = data[data$Group == 0,]
+#wilcox.test(group0$BY1.vol.diff , group0$Y1Y2.vol.diff,paired=TRUE)
+#wilcox.test(group1$BY1.vol.diff , group0$BY1.vol.diff,paired=FALSE)
+wilcox.test(group1$Y1Y2.vol.diff , group0$Y1Y2.vol.diff,paired=FALSE)
+
+
 
 ## 75% of the sample size
 smp_size <- floor(0.75 * nrow(data))
